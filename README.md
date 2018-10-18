@@ -1,2 +1,2 @@
 # Craft-Beer-Breweries-US-Market-Research
-The case study/project is to do exploratory data analysis on the dataset Beers.csv and Breweries.csv file(s) 
+The craft beer industry is going through tremendous growth in US. We have completed an exploratory data analysis on the craft beer market using the the datasets Beers.csv and Breweries.csv file(s). The datasets Beers.csv and Breweries used for this research includes 2410 different beers and 558 breweries, respectively.  This market research will answer you questions about the craft beer and breweries landscape in the US and dive into the characteristics of ABV (Alcohol by Volume of the Beer) and IBU (International Bitterness Units of the beer) of craft beers.  
