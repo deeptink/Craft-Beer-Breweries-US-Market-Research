@@ -110,4 +110,5 @@ Variable			State_IBU					Data frame (State_IBU) holds the information about medi
 Variable			State_beer					Data frame (State_beer) holds the consolidated information about median ABV and IBU by state
 Variable			States_graphabv					ggplot for ABV median by state
 Variable			States_graphibu					ggplot for IBU median by state
+Variable   BeersStyle          Dataframe which includes style type
 =======
