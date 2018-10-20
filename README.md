@@ -15,8 +15,11 @@ Refer Codebook in Data folder in Github.
 Codebook
 ========
 All the information about the files, descriptions, variables which are used as a part of the research are available.
+
 It provides as a reference document for questions.
+
 File name - Beer_Breweries_Research_Codebook.txt
+
 Github Path - Craft-Beer-Breweries-US-Market-Research/Analysis/Data/
 
 Github Navigation
