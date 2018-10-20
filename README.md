@@ -3,12 +3,13 @@ The case study/project is to do exploratory data analysis on the dataset Beers.c
 
 Overview
 ========
-The craft beer industry is going through tremendous growth in US. The dataset used for this research includes 2410 different beers and 558 breweries.It is a cleaned datasets which are having individual information split into two files
+The craft beer industry is going through tremendous growth in US. The dataset used for this research includes 2410 different beers and 558 breweries. It is a cleaned datasets which are having individual information split into two files 
 
 Beers.csv
 
 Breweries.csv
 
+We have completed an exploratory data analysis on the craft beer market using the these datasets This market research will answer you questions about the craft beer and breweries landscape in the US and dive into the characteristics of ABV (Alcohol by Volume of the Beer) and IBU (International Bitterness Units of the beer) of craft beers.
 
 R Session Information
 =====================
