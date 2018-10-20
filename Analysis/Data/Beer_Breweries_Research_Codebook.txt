@@ -7,7 +7,6 @@
 Overview
 ========
 The craft beer industry is going through tremendous growth in US. The dataset used for this research includes 2410 different beers and 558 breweries. It is a cleaned datasets which are having individual information split into two files
-
 Beers.csv
 Breweries.csv
 
@@ -92,6 +91,8 @@ library(rvest)
 library(XML)
 library(ggplot2)
 library(gcookbook)
+library(data.table)
+library(sqldf)
 
 ====================
 Objects & Variables
@@ -109,5 +110,4 @@ Variable			State_IBU					Data frame (State_IBU) holds the information about medi
 Variable			State_beer					Data frame (State_beer) holds the consolidated information about median ABV and IBU by state
 Variable			States_graphabv					ggplot for ABV median by state
 Variable			States_graphibu					ggplot for IBU median by state
-
-
+=======
