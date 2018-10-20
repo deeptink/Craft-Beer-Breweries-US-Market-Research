@@ -1,0 +1,308 @@
+---
+title: "CRAFT BEER BREWERIES US MARKET RESEARCH"
+author: "Deepti Kunupudi & Johnny Gipson"
+date: "October 20, 2018"
+output: 
+  html_document:
+    keep_md: true
+---
+
+###Summary
+Craft beer has taken over the U.S. landscape.  There are more than over 500 breweries that have created more than 2000 different kind of craft beers just in the last decade.  People are now giving anecdote about craft beer like they do fine wines.  Our craft enthusiast has taken it one step further by looking at quantitative variables like ABV (Alcohol by Volume of Beer), IBU (International Bitterness Units of Beer), and Gravity to help steer the novices beer drinker to their perfect beer. Our company is providing you with information of the craft beer landscape to help you make an inform decision about enetring the craft beer business. 
+
+###R libraries
+
+These libraries are needed to help perform the market analysis for craft beers and breweries.
+```{r, echo=TRUE}
+library(tidyr)
+library(plyr)
+library(dplyr)
+library(bitops)
+library(RCurl)
+library(xml2)
+library(rvest)
+library(XML)
+library(ggplot2)
+library(gcookbook)
+library(data.table)
+library(sqldf)
+```
+
+###Datasets
+The information was provided into 2 files -
+
+* Beers.csv
+* Breweries.csv
+
+Beers.csv is a comma separated file with data for different beers and its different attributes based on brewery, style, alcohol content and ounces.
+
+Breweries.csv is a comma separated file with information pertaining to brewery name and its geographic details by city and state in US.
+
+###The Landscape of U.S Breweries by State 
+
+The following steps are taken to read the datasets into R and further explore the data for analysis.
+
+* Read the CSV file which is located on desktop. The path represents the file on individual computer/system. Later, create the dataframe "Breweries".
+
+* Use R functions - *dim*, *str*, *head*, *tail* to examine the "Breweries" dataframe.  This allow to know the dimension, the type of variables, variable names, and scan the first and last ten row of the data.
+
+* R functions - *summarize* and *count*  are used to count the breweries by state. The new data frame "Breweries_state" is created to store our results.
+
+
+```{r, echo=TRUE, fig.width=14}
+Breweries<-read.csv(file='//Users//dee//Data Science//Case Study 1//Breweries.csv')
+dim(Breweries) # dimensions
+str(Breweries) # structure
+head(Breweries,10) # Top 10 data
+tail(Breweries,10) # Bottom 10 data
+
+Breweries_state<-summarise(group_by(Breweries,State), count=n())
+Breweries_state # Look at the summarized the data
+Breweries_state<-data.frame(Breweries_state) # converting into data frame.
+dim(Breweries_state) # dimensions
+str(Breweries_state) # structure
+head(Breweries_state,10) # Top 10 data
+```
+
+* Visual presentation of Breweries by state.
+
+```{r, echo=TRUE, fig.width=14}
+Breweries_graph<-ggplot(Breweries_state, aes(x=State,y=count, fill=State)) + geom_bar(stat="identity", colour="black", position=position_dodge(0.7))
+Breweries_graph + ggtitle ("Number of Breweries per State ") + xlab("States") +ylab ("Number of Breweries")  + theme(axis.text.x = element_text(vjust=0.3,hjust=0.3, angle=90))+theme(plot.title=element_text(hjust=0.5,size=16,face="bold"))
+```
+
+Based on the bar plot, Colorado has the most the breweries followed by California and interestingly states like West Virginia, South Dakota, North Dakota and the District of Columbia have only one brewery.
+
+
+###Data Consolidation & Analytics on Breweries and Beers
+
+* Data will be merged for Breweries and Beers datasets for further analysis.
+
+* It will be merged using key column in both datasets.
+    + Join - Brew_ID from Breweries and Brewery_id from Beers.
+
+* A new dataframe "Brew_beer" is created for consolidated data.
+
+* R functions - *dim*, *str*, *head*, *tail* to examine the "Brew_beer" dataframe.
+  
+
+```{r set-options, echo=TRUE}
+Beers<-read.csv(file='//Users//dee//Data Science//Case Study 1//Beers.csv')
+dim(Beers) # Dimensions
+str(Beers) # Structure
+head(Beers, 10) # top 10 rows
+tail(Beers,10) # bottom 10 rows
+Brew_beer<-merge(Breweries,Beers, by.x=c("Brew_ID"),by.y=c("Brewery_id"))
+dim(Brew_beer) # Dimensions
+str(Brew_beer) # Structure 
+head(Brew_beer, 6) # top 6 rows
+tail(Brew_beer, 6) # bottom 6 rows
+```
+
+Based on the initial data scan, we have NAs in IBU and ABV columns. It is an indication of missing values.
+
+*NA - Not Available*
+
+**NA Metrics in Consolidated Data**
+
+Scanning the data for any NAs after merging is always a good practice.
+
+Following R function provides the count of NAs based on each column. It is a custom function created to find the count by column.
+
+```{r, echo=TRUE,}
+sum(is.na(Brew_beer))
+sapply(Brew_beer,function(x)sum(is.na(x)))
+```
+
+We currently have 1067 NAs in the entire dataframe.  1005 of 1067 NAs lie in the IBU (International Bitterness Units) column and the rest of the NAs are in the ABV (Alcohol by Volume) column, respectively.
+
+###Compute the median ABV and IBU for each state and Visualize
+
+* R functions - *tapply* and *aggregate* are used.
+
+* New dataframes "State_ABV" and "State_IBU" are created for individual median computation for IBU and ABV.
+
+* Consolidated dataframe - "State_beer" is created for visualization.
+
+```{r, echo=TRUE,fig.width=14}
+median_woNAs <- function(x) {median(x[which(!is.na(x))])}
+State_ABV<-tapply(Brew_beer$ABV, Brew_beer$State,median_woNAs)
+State_IBU<-tapply(Brew_beer$IBU, Brew_beer$State,median_woNAs)
+State_ABV<-aggregate(Brew_beer$ABV, list(Brew_beer$State),median_woNAs)
+State_IBU<-aggregate(Brew_beer$IBU, list(Brew_beer$State),median_woNAs)
+colnames(State_ABV) <-c("State","ABV_Median")
+colnames(State_IBU) <-c("State","IBU_Median")
+State_beer<-merge(State_ABV,State_IBU, by= "State")
+dim(State_beer)# Dimensions
+str(State_beer)# Structure
+head(State_beer)# Top 6 rows
+tail(State_beer)# bottom 6 rows
+```
+
+* Visualization of median ABV and IBU -
+
+```{r, echo=TRUE,fig.width=14}
+States_graphabv<-ggplot(State_beer, aes(x=State,y=ABV_Median, fill=State)) + geom_bar(stat="identity", colour="black", position=position_dodge(0.7))
+States_graphabv + ggtitle ("ABV Median by State") + xlab("States") +ylab ("ABV Median") + theme(axis.text.x = element_text(vjust=0.3,hjust=0.3, angle=90))+theme(plot.title=element_text(hjust=0.5,size=16,face="bold"))
+States_graphibu<-ggplot(State_beer, aes(x=State,y=IBU_Median, fill=State)) + geom_bar(stat="identity", colour="black", position=position_dodge(0.7))
+States_graphibu + ggtitle ("IBU Median by State") + xlab("States") +ylab ("IBU Median") + theme(axis.text.x = element_text(vjust=0.3,hjust=0.3, angle=90))+theme(plot.title=element_text(hjust=0.5,size=16,face="bold"))
+```
+
+State South Dakota (SD) breweries have no IBUs in the data set. 
+
+
+###State with Maximum ABV
+
+```{r}
+sqldf("select State from Brew_beer where ABV=(Select max(ABV) from Brew_beer)")
+```
+
+Colorado reported the maximum ABV (Alcohol by Volume).
+
+###State with Most IBU
+```{r}
+sqldf("select State from Brew_beer where IBU=(Select max(IBU) from Brew_beer)")
+```
+
+Oregon reported the most IBU (International Bitter Units).
+
+###Summary statistics for the ABV Variable
+
+* The ABV variables has median and mean of 0.056 and .0558, respectively.
+
+* With the mean and median close to together we may have normal distribution. 
+
+
+```{r, echo=TRUE}
+summary(State_beer$ABV)
+Brew_beer<-na.omit(Brew_beer)
+summary(Brew_beer$ABV)
+```
+
+* The summary function shows both datasets to have close to the same mean and median.
+
+* The ABV medians are 0.056 and 0.057 for the "State_beer" and "Beer_brew" dataframes respectively.
+
+**Box Plot**
+
+* Visually representing the data through Box plot.
+
+```{r}
+boxplot(Brew_beer$ABV,data=Brew_beer)
+```
+
+**Histogram**
+
+```{r}
+hist(Brew_beer$ABV)
+```
+
+##Relationship Between ABV and IBU
+
+**Scatter Plot**
+
+```{r}
+ggplot(Brew_beer, aes(x=IBU, y= ABV)) +
+  geom_point(shape=1) +
+  theme(axis.text.x=element_text(size=rel(1.0)))+
+ggtitle("Correlation between IBU and ABV ") +
+  labs(x="IBU",y="ABV")
+```
+
+* The scatter plot visually shows that there is some correlation between ABV and IBU.
+
+* Adding a regression line to the data evidently shows the relationship.
+
+```{r}
+ggplot(Brew_beer, aes(x=IBU, y= ABV)) +
+  geom_point(shape=1) +
+   geom_smooth(method=lm) + 
+  theme(axis.text.x=element_text(size=rel(1.0)))+
+ggtitle("Correlation between IBU and ABV - with Regression Line ") +
+  labs(x="IBU",y="ABV")
+```
+
+* The regression line above, shows that it is a positive linear relationship between ABV and IBU.
+
+* Executing the Pearson's Correlation Coefficient on variables ABV and IBU.
+
+```{r}
+cor(Brew_beer$IBU, Brew_beer$ABV ,method="pearson") 
+```
+
+* Pearson's Correlation Coefficient r = *0.6706215*. It indicates that the correlation between ABV and IBU for this dataset.  
+
+* Conducting a correlation test shows more evidence about the association between paired samples(ABV and IBU).
+
+```{r}
+cor.test(Brew_beer$ABV,Brew_beer$IBU,method="pearson")
+```
+
+* At 95 % confidence interval, *t-statistic: 33.863* and *p-value: <2.2e-16*
+
+* With p-value < 2.2e-16, we reject the null hypothesis, indicating that there is relationship between ABV and IBU statistically.
+
+
+```{r}
+x1<-lm(ABV~IBU,data=Brew_beer)
+summary(x1)
+```
+
+* The coefficient of determination , *r-squared is 0.4497*, indicating that the 44.97& ~ 45% of the variation in the ABV value is reduced by taking into account IBV or it can also be exaplined as 45% of the variation in ABV is 'due to' or 'explained by' IBV.
+
+* Additionally to add more support to evidence, the below plots show more information.
+
+```{r}
+par(mfrow=c(2,2))
+plot(x1)
+```
+
+* We could explain 45% of variation but what about the 55%? 
+
+* Let’s dig further into aspects on the data. Based on the styles data in Beers.csv file, let us categorize the styles in different categories -
+    + APA
+    + IPA
+    + Lager
+    + Other
+    + Other Ale
+    
+* Upload the new data to R environment and explore further in one of the options of influencers. It is just a preliminary.
+
+
+```{r}
+BeersStyle<-read.csv(file='//Users//dee//Data Science//Case Study 1//Beers_Type.csv')
+head(BeersStyle,n=2) # top 2 records
+```
+
+* Scatter plot based on types indicates that there might be an evidence that style type may also influence the correlation.
+
+```{r}
+p1<-ggplot(BeersStyle,aes(x=IBU, y=ABV,color=Type))+geom_point()
+p1 + geom_smooth(method=lm)
+```
+
+###Conclusion
+
+With p-value of <2.23-16 we can conclude that there is relationship between ABV and IBU statistically. Based on coefficient of determination, we could attribute to 45% of the variation in the ABV value is reduced by taking into account IBV **or** it can also be explained as 45% of the variation in ABV is 'due to' or 'explained by' IBV.
+
+The remaining 55% can be attributed to other parameters which are clearly depicted -
+
+  + **Data completeness in question**
+      + From the datasets we can see that we have missing data for values which are attributed to finding the relationship between ABV and IBU.
+      + 2.5% of ABV attribute values are missing.
+      + 41% of IBU attribute values are missing. 
+        
+  + **ABV and IBU relationship**
+      + Do we have to consider any other attributes or any other data needs to be considered?
+        
+  + **Influencers**
+      + Do styles have any influence on ABV and IBV? 
+      + Does geographical patterns / Cultural impact need to be considered?
+        
+The analysis generated more questions on further variables which may need to be considered but the initial analysis provides evidence that there is a positive correlation between ABV and IBU(just an association but not casuation).
+
+
+###References
+
+https://www.craftbeer.com/beer/what-is-craft-beer
+
