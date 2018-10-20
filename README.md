@@ -6,7 +6,9 @@ Overview
 The craft beer industry is going through tremendous growth in US. The dataset used for this research includes 2410 different beers and 558 breweries.It is a cleaned datasets which are having individual information split into two files
 
 Beers.csv
+
 Breweries.csv
+
 
 R Session Information
 =====================
