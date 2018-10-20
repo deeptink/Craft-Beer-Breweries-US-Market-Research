@@ -28,6 +28,13 @@ library(data.table)
 library(sqldf)
 ```
 
+
+###R Session Information
+
+```{r}
+sessionInfo()
+```
+
 ###Datasets
 The information was provided into 2 files -
 

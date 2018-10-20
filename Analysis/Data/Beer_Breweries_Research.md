@@ -127,6 +127,49 @@ library(sqldf)
 ## Loading required package: RSQLite
 ```
 
+
+###R Session Information
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.5.1 (2018-07-02)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS  10.14
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] sqldf_0.4-11      RSQLite_2.1.1     gsubfn_0.7       
+##  [4] proto_1.0.0       data.table_1.11.8 gcookbook_1.0    
+##  [7] ggplot2_3.0.0     XML_3.98-1.16     rvest_0.3.2      
+## [10] xml2_1.2.0        RCurl_1.95-4.11   bitops_1.0-6     
+## [13] dplyr_0.7.6       plyr_1.8.4        tidyr_0.8.1      
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_0.12.18     pillar_1.3.0     compiler_3.5.1   bindr_0.1.1     
+##  [5] tools_3.5.1      bit_1.1-14       digest_0.6.16    memoise_1.1.0   
+##  [9] evaluate_0.11    tibble_1.4.2     gtable_0.2.0     pkgconfig_2.0.2 
+## [13] rlang_0.2.2      DBI_1.0.0        yaml_2.2.0       bindrcpp_0.2.2  
+## [17] withr_2.1.2      stringr_1.3.1    httr_1.3.1       knitr_1.20      
+## [21] bit64_0.9-7      rprojroot_1.3-2  grid_3.5.1       tidyselect_0.2.4
+## [25] glue_1.3.0       R6_2.2.2         rmarkdown_1.10   blob_1.1.1      
+## [29] purrr_0.2.5      magrittr_1.5     backports_1.1.2  scales_1.0.0    
+## [33] htmltools_0.3.6  assertthat_0.2.0 colorspace_1.3-2 stringi_1.2.4   
+## [37] lazyeval_0.2.1   munsell_0.5.0    chron_2.3-53     crayon_1.3.4
+```
+
 ###Datasets
 The information was provided into 2 files -
 
@@ -273,7 +316,7 @@ Breweries_graph<-ggplot(Breweries_state, aes(x=State,y=count, fill=State)) + geo
 Breweries_graph + ggtitle ("Number of Breweries per State ") + xlab("States") +ylab ("Number of Breweries")  + theme(axis.text.x = element_text(vjust=0.3,hjust=0.3, angle=90))+theme(plot.title=element_text(hjust=0.5,size=16,face="bold"))
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 Based on the bar plot, Colorado has the most the breweries followed by California and interestingly states like West Virginia, South Dakota, North Dakota and the District of Columbia have only one brewery.
 
@@ -553,7 +596,7 @@ States_graphabv<-ggplot(State_beer, aes(x=State,y=ABV_Median, fill=State)) + geo
 States_graphabv + ggtitle ("ABV Median by State") + xlab("States") +ylab ("ABV Median") + theme(axis.text.x = element_text(vjust=0.3,hjust=0.3, angle=90))+theme(plot.title=element_text(hjust=0.5,size=16,face="bold"))
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 ```r
 States_graphibu<-ggplot(State_beer, aes(x=State,y=IBU_Median, fill=State)) + geom_bar(stat="identity", colour="black", position=position_dodge(0.7))
@@ -564,7 +607,7 @@ States_graphibu + ggtitle ("IBU Median by State") + xlab("States") +ylab ("IBU M
 ## Warning: Removed 1 rows containing missing values (geom_bar).
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-6-2.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-7-2.png)<!-- -->
 
 State South Dakota (SD) breweries have no IBUs in the data set. 
 
@@ -636,7 +679,7 @@ summary(Brew_beer$ABV)
 boxplot(Brew_beer$ABV,data=Brew_beer)
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 **Histogram**
 
@@ -645,7 +688,7 @@ boxplot(Brew_beer$ABV,data=Brew_beer)
 hist(Brew_beer$ABV)
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 ##Relationship Between ABV and IBU
 
@@ -660,7 +703,7 @@ ggtitle("Correlation between IBU and ABV ") +
   labs(x="IBU",y="ABV")
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
 * The scatter plot visually shows that there is some correlation between ABV and IBU.
 
@@ -676,7 +719,7 @@ ggtitle("Correlation between IBU and ABV - with Regression Line ") +
   labs(x="IBU",y="ABV")
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 * The regression line above, shows that it is a positive linear relationship between ABV and IBU.
 
@@ -756,7 +799,7 @@ par(mfrow=c(2,2))
 plot(x1)
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 * We could explain 45% of variation but what about the 55%? 
 
@@ -801,7 +844,7 @@ p1 + geom_smooth(method=lm)
 ## Warning: Removed 1005 rows containing missing values (geom_point).
 ```
 
-![](CS_20181019_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+![](Beer_Breweries_Research_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
 
 ###Conclusion
 
