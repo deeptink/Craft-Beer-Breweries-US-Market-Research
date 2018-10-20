@@ -1,0 +1,78 @@
+------------------------------------------------------------
+ 
+        CRAFT BEER BREWERIES US MARKET RESEARCH - CODEBOOK
+
+------------------------------------------------------------
+
+Overview
+========
+The craft beer industry is going through tremendous growth in US. The dataset used for this research includes 2410 different beers and 558 breweries.It is a cleaned datasets which are having individual information split into two files
+
+Beers.csv
+Breweries.csv
+
+Files Summary
+==============
+File Name			Beers.csv
+File Type			Input
+File Description		The file contains data for different beers and its different attributes based on brewery,style, alcohol content and ounces.
+Number of records		2410
+Number of attributes		7
+
+File Name			Breweries.csv
+File Type			Input
+File Description		The file contains data for Brewery Name and its location details by city and state in US.
+Number of records		558
+Number of attributes		4
+
+Attributes Description by Input File
+===================================
+FileName				AttributeName						AttributeDescription
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Beers.csv				Name							Name of the beer
+Beers.csv				Beer_ID							Unique identifier of the beer
+Beers.csv				ABV							Alcohol by volume of the beer is a standard measure
+Beers.csv				IBU							International Bitterness Units of the beer; is used to approximately quantify the bitterness of beer.
+Beers.csv				Brewery_ID						Brewery ID associated with the beer
+Beers.csv				Style							Style of the beer
+Beers.csv				Ounces							Ounces of beer
+Breweries.csv				Brew_ID							Unique identifier of the brewery
+Breweries.csv				Name							Name of the brewery
+Breweries.csv				City							City where the brewery is located in U.S
+Breweries.csv				State							U.S State where the brewery is located
+
+======================
+R Session Information
+======================
+<TBA>  
+
+====================
+R Libraries Utlized
+====================
+library(tidyr)
+library(plyr)
+library(dplyr)
+library(bitops)
+library(RCurl)
+library(xml2)
+library(rvest)
+library(XML)
+library(ggplot2)
+library(gcookbook)
+
+====================
+Objects & Variables
+====================
+Type				Name						Description
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable			Beers						Data frame (Beers) holds information related to Beers.csv
+Variable			Breweries					Data frame (Breweries) holds information related to Breweries.csv
+Variable			Breweries_state					It holds the data for each state and total number of breweries by state
+Variable			Breweries_graph					ggplot for State vs Number of Breweries by State
+Variable 			Brew_beer					Data frame (Brew_beer) holds consolidated information about breweries and beers
+Function			median_woNAs					Function to calculate median without na
+Variable			State_ABV					Data frame (State_ABV) holds the information about median ABV by state
+Variable			State_IBU					Data frame (State_IBU) holds the information about median IBU by state
+Variable			State_beer					Data frame (State_beer) holds the consolidated information about median ABV and IBU by state
+Variable			States_graphabv					ggplot for ABV median by state
+Variable			States_graphibu					ggplot for IBU median by state
