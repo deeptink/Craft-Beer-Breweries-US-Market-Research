@@ -59,6 +59,8 @@ library(rvest)
 library(XML)
 library(ggplot2)
 library(gcookbook)
+library(data.table)
+library(sqldf)
 
 ====================
 Objects & Variables
