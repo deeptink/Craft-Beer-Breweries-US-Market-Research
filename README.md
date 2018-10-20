@@ -25,18 +25,27 @@ Github Navigation
 Following are the folders for navigation - 
 
 Master  - Craft-Beer-Breweries-US-Market-Research/
+
 Analysis  - Craft-Beer-Breweries-US-Market-Research/Analysis/
+
 Data  - Craft-Beer-Breweries-US-Market-Research/Analysis/Data/
+
 
 Files and Descriptions
 ======================
 Beer_Breweries_Research.Rmd                   R Markdown file generated for research
+
 Beer_Breweries_Research.md                    MD file generated for research
+
 Beer_Breweries_Research.html                  R html file generated for research
 
 Beer_Breweries_Research_Codebook.txt          Codebook created for research
 
 Beers.csv                                     Input file provided for research
+
 Beers_Type.csv                                Research Input file generated for further analysis
+
 Breweries.csv                                 Input file provided for research
+
 Notes                                         For any additional information
+
